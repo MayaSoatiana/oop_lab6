@@ -13,9 +13,5 @@ public:
     bool fight(std::shared_ptr<Elf> other) override;
     bool fight(std::shared_ptr<Bandit> other) override;
 
-    // std::string get_type() const override { return "Bear"; }
-
     void print(std::ostream& os) const override;
-
-    friend std::ostream& operator<<(std::ostream &os, const NPC &npc);
 };
