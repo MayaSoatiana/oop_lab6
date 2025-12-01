@@ -4,6 +4,10 @@ project(rpg)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Include directories
+include_directories(include)
+
+# Fetch GoogleTest
 include(FetchContent)
 FetchContent_Declare(
   googletest
@@ -20,25 +24,38 @@ if(WIN32)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-subsystem,console")
 endif()
 
-add_executable(rpg
-  src/main.cpp 
-  src/bear.cpp
-  src/elf.cpp
-  src/bandit.cpp
-  src/fight_visitor.cpp
-  src/npc.cpp
-  src/npc_factory.cpp
-  src/observer.cpp
+# List all source files
+set(SOURCES
+    src/main.cpp 
+    src/bear.cpp
+    src/elf.cpp
+    src/bandit.cpp
+    src/fight_visitor.cpp
+    src/npc.cpp
+    src/npc_factory.cpp
+    src/observer.cpp
 )
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include)
-target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Wall -Wextra -Wunused-parameter)
 
-# enable_testing()
+# Main executable
+add_executable(rpg ${SOURCES})
+target_compile_options(rpg PRIVATE -Wall -Wextra -Wunused-parameter)
 
-# add_executable(tests tests/test.cpp )
-# target_include_directories(tests PRIVATE include)
-# target_link_libraries(tests PRIVATE gtest_main)
-# target_compile_options(tests PRIVATE -Wall -Wextra)
+# Tests - need the same source files (excluding main.cpp)
+set(TEST_SOURCES
+    tests/test.cpp
+    src/bear.cpp
+    src/elf.cpp
+    src/bandit.cpp
+    src/fight_visitor.cpp
+    src/npc.cpp
+    src/npc_factory.cpp
+    src/observer.cpp
+)
 
-# Добавление тестов в тестовый набор
-# add_test(NAME MyProjectTests COMMAND tests)
+add_executable(tests ${TEST_SOURCES})
+target_include_directories(tests PRIVATE include)
+target_link_libraries(tests PRIVATE gtest gtest_main)
+target_compile_options(tests PRIVATE -Wall -Wextra)
+
+enable_testing()
+add_test(NAME RPGTests COMMAND tests)

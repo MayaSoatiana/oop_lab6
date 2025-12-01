@@ -39,6 +39,15 @@ public:
     NPC(const std::string& name_, NpcType type_, int x_, int y_);
     NPC(NpcType type_, std::istream &is);
     virtual ~NPC() = default;
+
+    const std::string& getName() const { return name; }
+    NpcType getType() const { return type; }
+    int getX() const { return x; }
+    int getY() const { return y; }
+    
+    void setX(int newX) { x = newX; }
+    void setY(int newY) { y = newY; }
+    void setName(const std::string& newName) { name = newName; }
     
     void subscribe(std::shared_ptr<IFightObserver> observer);
     void fight_notify(const std::shared_ptr<NPC> defender, bool win);
